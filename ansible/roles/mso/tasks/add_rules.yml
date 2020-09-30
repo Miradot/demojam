@@ -1,0 +1,59 @@
+---
+- name: Add a new filter entry
+  cisco.mso.mso_schema_template_filter_entry:
+    host: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: no
+    schema: "{{ item.mso.schema }}"
+    template: "{{ item.stretched_template }}"
+    entry: "{{ item.mso.extepg }}_PublicAccess"
+    filter: "{{ item.mso.extepg }}_PublicAccess"
+    state: present
+  delegate_to: localhost
+
+- name: Add a new contract filter
+  cisco.mso.mso_schema_template_contract_filter:
+    host: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: no
+    schema: "{{ item.mso.schema }}"
+    template: "{{ item.stretched_template }}"
+    contract: "{{ item.mso.extepg }}_PublicAccess"
+    contract_scope: vrf
+    filter: "{{ item.mso.extepg }}_PublicAccess"
+    state: present
+  delegate_to: localhost
+
+- name: Add a contract to an EPG
+  cisco.mso.mso_schema_template_anp_epg_contract:
+    host: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: no
+    schema: "{{ item.mso.schema }}"
+    template: "{{ item.stretched_template }}"
+    anp: "{{ item.mso.ap }}"
+    epg: "{{ item.mso.epg }}"
+    contract:
+      name: "{{ item.mso.extepg }}_PublicAccess"
+      type: provider
+    state: present
+  delegate_to: localhost
+
+- name: Add a contract to an EPG
+  cisco.mso.mso_schema_template_external_epg_contract:
+    host: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: no
+    schema: "{{ item.mso.schema }}"
+    template: "{{ item.aws.template }}"
+    external_epg: "{{ item.mso.extepg }}"
+    contract:
+      name: "{{ item.mso.extepg }}_PublicAccess"
+      template: "{{ item.stretched_template }}"
+      type: consumer
+    state: present
+  delegate_to: localhost

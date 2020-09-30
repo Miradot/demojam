@@ -1,0 +1,22 @@
+---
+- name: Deploy a schema template
+  mso_schema_template_deploy:
+    host: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: no
+    schema: "{{ item.mso.schema }}"
+    template: "{{ item.aws.template }}"
+    state: deploy
+  delegate_to: localhost
+
+- name: Deploy a schema template
+  mso_schema_template_deploy:
+    host: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: no
+    schema: "{{ item.mso.schema }}"
+    template: "{{ item.stretched_template }}"
+    state: deploy
+  delegate_to: localhost

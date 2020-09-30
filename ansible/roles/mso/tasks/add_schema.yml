@@ -1,0 +1,24 @@
+---
+- name: Add a new schema and templates
+  cisco.mso.mso_schema_template:
+    host: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: no
+    tenant: "{{ item.mso.tenant }}"
+    schema: "{{ item.mso.schema }}"
+    template: "{{ item.stretched_template }}"
+    state: present
+  delegate_to: localhost
+
+- name: Add a new schema and templates
+  cisco.mso.mso_schema_template:
+    host: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: no
+    tenant: "{{ item.mso.tenant }}"
+    schema: "{{ item.mso.schema }}"
+    template: "{{ item.aws.template }}"
+    state: present
+  delegate_to: localhost

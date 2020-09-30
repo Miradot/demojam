@@ -1,0 +1,21 @@
+---
+- include: add_tenant.yml
+  loop: "{{ customers }}"
+- include: add_schema.yml
+  loop: "{{ customers }}"
+- include: add_schema_site.yml
+  loop: "{{ customers }}"
+- include: add_schema_vrf.yml
+  loop: "{{ customers }}"
+- include: add_schema_bd.yml
+  loop: "{{ customers }}"
+- include: add_schema_ap.yml
+  loop: "{{ customers }}"
+- include: add_schema_l3out.yml
+  loop: "{{ customers }}"
+- include: add_schema_epg.yml
+  loop: "{{ customers }}"
+- include: add_rules.yml
+  loop: "{{ customers }}"
+- include: deploy_schema.yml
+  loop: "{{ customers }}"

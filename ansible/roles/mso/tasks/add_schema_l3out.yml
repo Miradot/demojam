@@ -1,0 +1,15 @@
+---
+- name: Add new dummy site BD l3out
+  cisco.mso.mso_schema_template_l3out:
+    host: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: no
+    schema: "{{ item.mso.schema }}"
+    template: "{{ item.aws.template }}"
+    l3out: "{{ item.mso.l3out }}"
+    vrf:
+      name: "{{ item.mso.vrf }}"
+      template: "{{ item.stretched_template }}"
+    state: present
+  delegate_to: localhost

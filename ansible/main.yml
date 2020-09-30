@@ -1,0 +1,53 @@
+---
+- hosts: netbox
+  gather_facts: no
+  vars_files: ./vars_files/customers.yml
+
+  roles:
+    - role: netbox
+
+- hosts: dhcp
+  gather_facts: no
+  become: true
+
+  tasks:
+    - include_vars:
+        file: ./vars_files/customers.yml
+    - include_role:
+        name: dhcp
+
+- hosts: mso
+  gather_facts: no
+
+  tasks:
+    - include_vars:
+        file: ./vars_files/customers.yml
+    - include_role:
+        name: mso
+
+- hosts: aci
+  connection: local
+  gather_facts: no
+  tasks:
+    - include_vars:
+        file: ./vars_files/customers.yml
+    - include_role:
+        name: aci
+
+- hosts: vmware
+  connection: local
+  gather_facts: no
+  tasks:
+    - include_vars:
+        file: ./vars_files/customers.yml
+    - include_role:
+        name: vmware
+
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  tasks:
+    - include_vars:
+        file: ./vars_files/customers.yml
+    - include_role:
+        name: aws

@@ -1,0 +1,29 @@
+---
+vmware:
+  host:
+  user:
+  pass:
+  template:
+  datacenter:
+  datastore:
+  cluster:
+all:
+  access_key:
+  secret_key:
+aci:
+  host:
+  user:
+  pass:
+mso:
+  host:
+  user:
+  pass:
+dhcp:
+  host:
+  relay_ip:
+  relay_epg:
+  ansible_user:
+  ansible_become_pass:
+netbox:
+  host:
+  token:

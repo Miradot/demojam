@@ -1,0 +1,90 @@
+- name: Add new EPG
+  cisco.mso.mso_schema_template_anp_epg:
+    host: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: no
+    schema: "{{ item.mso.schema }}"
+    template: "{{ item.stretched_template }}"
+    anp: "{{ item.mso.ap }}"
+    epg: "{{ item.mso.epg }}"
+    bd:
+     name: "{{ item.mso.bd }}"
+    vrf:
+     name: "{{ item.mso.vrf }}"
+    state: present
+  delegate_to: localhost
+
+- name: Add VMM domain to onprem EPG
+  cisco.mso.mso_schema_site_anp_epg_domain:
+    host: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: no
+    schema: "{{ item.mso.schema }}"
+    site: "{{ item.onprem.name }}"
+    template: "{{ item.stretched_template }}"
+    anp: "{{ item.mso.ap }}"
+    epg: "{{ item.mso.epg }}"
+    domain_association_type: vmmDomain
+    domain_profile: 'ACI'
+    deployment_immediacy: immediate
+    resolution_immediacy: immediate
+    state: present
+  delegate_to: localhost
+
+- name: Add selector to External EPG
+  cisco.mso.mso_schema_site_external_epg_selector:
+    host: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: no
+    schema: "{{ item.mso.schema }}"
+    site: "{{ item.aws.name }}"
+    template: "{{ item.aws.template }}"
+    external_epg: "{{ item.mso.extepg }}"
+    selector: selector_1
+    expressions:
+      - type: ip_address
+        operator: equals
+        value: 0.0.0.0/0
+    state: present
+  delegate_to: localhost
+
+- name: Add new external EPG
+  cisco.mso.mso_schema_template_external_epg:
+    host: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: no
+    schema: "{{ item.mso.schema }}"
+    template: "{{ item.aws.template }}"
+    externalepg: "{{ item.mso.extepg }}"
+    anp:
+      name: "{{ item.mso.extap }}"
+    vrf:
+     name: "{{ item.mso.vrf }}"
+     template: "{{ item.stretched_template }}"
+    l3out:
+      name: "{{ item.mso.l3out }}"
+    state: present
+  delegate_to: localhost
+
+- name: Add selector to AWS EPG
+  cisco.mso.mso_schema_site_anp_epg_selector:
+    host: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: no
+    schema: "{{ item.mso.schema }}"
+    site: aws
+    template: "{{ item.stretched_template }}"
+    anp: "{{ item.mso.ap }}"
+    epg: "{{ item.mso.epg }}"
+    selector: selector_1
+    expressions:
+      - type: region
+        operator: equals
+        value: "{{ item.aws.region }}"
+    state: present
+  delegate_to: localhost

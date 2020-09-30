@@ -1,0 +1,36 @@
+---
+- name: Add a new site to a schema
+  cisco.mso.mso_schema_site:
+    host: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: no
+    schema: "{{ item.mso.schema }}"
+    site: "{{ item.aws.name }}"
+    template: "{{ item.stretched_template }}"
+    state: present
+  delegate_to: localhost
+
+- name: Add a new site to a schema
+  cisco.mso.mso_schema_site:
+    host: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: no
+    schema: "{{ item.mso.schema }}"
+    site: "{{ item.onprem.name }}"
+    template: "{{ item.stretched_template }}"
+    state: present
+  delegate_to: localhost
+
+- name: Add a new site to a schema
+  cisco.mso.mso_schema_site:
+    host: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: no
+    schema: "{{ item.mso.schema }}"
+    site: "{{ item.aws.name }}"
+    template: "{{ item.aws.template }}"
+    state: present
+  delegate_to: localhost

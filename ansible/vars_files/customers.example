@@ -1,0 +1,32 @@
+---
+customers:
+- mso:
+    tenant: Demo_Tenant
+    schema: Demo_Schema
+    ap: Demo_AP
+    extap: Demo_ExtAP
+    epg: Demo_EPG
+    extepg: Demo_ExtEPG
+    vrf: Demo_VRF
+    bd: Demo_BD
+    l3out: Demo_L3Out
+  aws:
+    public: true                    # If true the aws servers will be able to access from internet
+    region: eu-north-1
+    zone: eu-north-1b
+    acct_id: 123456789              # AWS Account ID
+    template: AWS
+    name: aws                       # MSO AWS Site Name
+    prefix: 10.100.0.0/16           # Netbox parent prefix, must be created manually
+    aws_subnet: ""                  # Do not enter this, will be done automatically
+    vms:
+      - name: awspingserver         # Possible to add several servers
+  onprem:
+    name: onprem                    # MSO onprem Site Name
+    prefix: 10.92.0.0/14            # Netbox parent prefix, must be created manually
+    onprem_subnet: ""               # Do not enter this, will be done automatically
+  stretched_template: Onprem+AWS
+  vmware:
+    vms:
+      - name: onprempingserver      # Possible to add several servers
+#/                                  # Possible to add more customers, as long as they end with "#/"

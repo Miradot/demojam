@@ -1,0 +1,32 @@
+---
+customers:
+- mso:
+    tenant: 
+    schema: 
+    ap: 
+    extap: 
+    epg: 
+    extepg: 
+    vrf: 
+    bd: 
+    l3out: 
+  aws:
+    public:
+    region: 
+    zone: 
+    acct_id: 
+    template: 
+    name: 
+    prefix: 
+    aws_subnet: 
+    vms:
+      - name: 
+  onprem:
+    name: 
+    prefix: 
+    onprem_subnet: 
+  stretched_template: 
+  vmware:
+    vms:
+      - name: 
+#/

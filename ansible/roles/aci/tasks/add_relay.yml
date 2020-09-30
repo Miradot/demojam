@@ -1,0 +1,64 @@
+---
+- name: Add DHCP relay
+  aci_rest:
+    validate_certs: no
+    hostname: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    method: post
+    path: "/api/node/mo/uni/tn-{{ item.mso.tenant }}/relayp-relay.json"
+    content:
+      {
+        "dhcpRelayP": {
+          "attributes": {
+            "dn": "uni/tn-{{ item.mso.tenant }}/relayp-relay",
+            "owner": "tenant",
+            "name": "relay",
+            "rn": "relayp-relay",
+            "status": "created"
+          }
+        }
+      }
+  ignore_errors: true
+
+- name: Add entry to dhcp relay
+  aci_rest:
+    validate_certs: no
+    hostname: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    path: "/api/node/mo/uni/tn-{{ item.mso.tenant }}/relayp-relay.json"
+    method: post
+    content:
+      {
+        "dhcpRsProv": {
+          "attributes": {
+            "addr": "{{ relay_ip }}",
+            "tDn": "{{ relay_epg }}",
+            "status": "created"
+          }
+        }
+      }
+  ignore_errors: true
+
+- name: Add relay do BD
+  aci_rest:
+    validate_certs: no
+    hostname: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    path: "/api/node/mo/uni/tn-{{ item.mso.tenant }}/BD-{{ item.mso.bd }}/dhcplbl-relay.json"
+    method: post
+    content:
+      {
+        "dhcpLbl": {
+          "attributes": {
+            "dn": "uni/tn-{{ item.mso.tenant }}/BD-{{ item.mso.bd }}/dhcplbl-relay",
+            "owner": "tenant",
+            "name": "relay",
+            "rn":"dhcplbl-relay",
+            "status": "created"
+          }
+        }
+      }
+  ignore_errors: true

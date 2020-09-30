@@ -1,0 +1,29 @@
+---
+vmware:
+  host: 1.1.1.1
+  user: test
+  pass: secret
+  template: ubuntu
+  datacenter: datacenter
+  datastore: ssd1
+  cluster: cluster1
+all:
+  access_key: qwerty123456789       # AWS Credentials
+  secret_key: qwerty123456789       # AWS Credentials
+aci:
+  host: 1.1.1.2
+  user: test
+  pass: secret
+mso:
+  host: 1.1.1.3
+  user: test
+  pass: secret
+dhcp:
+  host: 1.1.1.4
+  relay_ip: 1.1.1.4
+  relay_epg: uni/tn-test/ap-test/epg-test
+  ansible_user: test 
+  ansible_become_pass: secret 
+netbox:
+  host: 1.1.1.5
+  token: qwerty123456789

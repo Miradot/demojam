@@ -1,0 +1,79 @@
+---
+- name: Check if sitebd already has the subnet defined
+  cisco.mso.mso_schema_site_bd_subnet:
+    host: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: no
+    schema: "{{ item.mso.schema }}"
+    site: "{{ item.onprem.name }}"
+    template: "{{ item.stretched_template }}"
+    bd: "{{ item.mso.bd }}"
+    subnet: '{{ item.onprem.onprem_subnet | ipaddr("net") | ipaddr("1") }}'
+    state: query
+  delegate_to: localhost
+  register: query_result
+  ignore_errors: true
+
+- name: Add new onprem BD
+  cisco.mso.mso_schema_template_bd:
+    host: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: no
+    schema: "{{ item.mso.schema }}"
+    template: "{{ item.stretched_template }}"
+    intersite_bum_traffic: yes
+    layer2_stretch: yes
+    optimize_wan_bandwidth: yes
+    bd: "{{ item.mso.bd }}"
+    vrf:
+      name: "{{ item.mso.vrf }}"
+    state: present
+  delegate_to: localhost
+  when: query_result.failed == true
+  
+- name: Add dummy onprem BD
+  cisco.mso.mso_schema_site_bd:
+    host: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: no
+    schema: "{{ item.mso.schema }}"
+    template: "{{ item.stretched_template }}"
+    bd: "{{ item.mso.bd }}"
+    site: "{{ item.onprem.name }}"
+    state: present
+  delegate_to: localhost
+
+- name: Change new onprem BD
+  cisco.mso.mso_schema_template_bd:
+    host: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: no
+    schema: "{{ item.mso.schema }}"
+    template: "{{ item.stretched_template }}"
+    intersite_bum_traffic: no
+    layer2_stretch: no
+    optimize_wan_bandwidth: no
+    bd: "{{ item.mso.bd }}"
+    vrf:
+      name: "{{ item.mso.vrf }}"
+    state: present
+  delegate_to: localhost
+
+- name: Add new onprem subnet to onprem BD
+  cisco.mso.mso_schema_site_bd_subnet:
+    host: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: no
+    schema: "{{ item.mso.schema }}"
+    template: "{{ item.stretched_template }}"
+    bd: "{{ item.mso.bd }}"
+    subnet: '{{ item.onprem.onprem_subnet | ipaddr("net") | ipaddr("1") }}'
+    scope: public
+    site: "{{ item.onprem.name }}"
+    state: present
+  delegate_to: localhost

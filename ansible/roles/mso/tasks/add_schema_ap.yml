@@ -1,0 +1,26 @@
+---
+- name: Add new AP
+  cisco.mso.mso_schema_template_anp:
+    host: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: no
+    schema: "{{ item.mso.schema }}"
+    template: "{{ item.stretched_template }}"
+    anp: "{{ item.mso.ap }}"
+    display_name: "{{ item.mso.ap }}"
+    state: present
+  delegate_to: localhost
+
+- name: Add new External AP
+  cisco.mso.mso_schema_template_anp:
+    host: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: no
+    schema: "{{ item.mso.schema }}"
+    template: "{{ item.aws.template }}"
+    anp: "{{ item.mso.extap }}"
+    display_name: "{{ item.mso.extap }}"
+    state: present
+  delegate_to: localhost

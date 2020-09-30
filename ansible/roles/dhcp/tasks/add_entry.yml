@@ -1,0 +1,15 @@
+---
+- name: Add dhcp entry
+  blockinfile:
+    path: /etc/dhcp/dhcpd.conf
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.onprem.onprem_subnet }}"
+    block: |
+      subnet {{ item.onprem.onprem_subnet.split("/")[0] }} netmask {{ item.onprem.onprem_subnet | ipaddr("netmask") }} {
+        range {{ item.onprem.onprem_subnet | ipaddr("100") | ipaddr("address") }} {{ item.onprem.onprem_subnet | ipaddr("200") | ipaddr("address") }};
+        option routers {{ item.onprem.onprem_subnet | ipaddr("1") | ipaddr("address") }};
+      }
+
+- name: restart dhcpd
+  service:
+    name: isc-dhcp-server
+    state: restarted

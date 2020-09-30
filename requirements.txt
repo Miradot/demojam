@@ -1,0 +1,7 @@
+boto
+boto3
+botocore
+PyVmomi
+pynetbox
+pyyaml
+ansible-vault

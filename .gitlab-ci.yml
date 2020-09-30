@@ -1,0 +1,35 @@
+image:
+  name: rflume/terraform-aws-ansible:tf-0.12.21
+  entrypoint:
+    - '/usr/bin/env'
+    - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+
+before_script:
+  - pip3 install -r requirements.txt
+  - ansible-galaxy collection install netbox.netbox
+  - ansible-galaxy collection install cisco.mso
+  - git remote set-url origin http://$CI_PUSH_USER:$CI_PUSH_TOKEN@$CI_PUSH_HOST/$CI_PUSH_USER/$CI_PROJECT_NAME.git
+  - git config --global user.email '$CI_PUSH_USER@example.se'
+  - git config --global user.name '$CI_PUSH_USER'
+  - export ANSIBLE_HOST_KEY_CHECKING=False
+  - git checkout $CI_COMMIT_REF_NAME
+  - git pull
+
+stages:
+  - apply
+
+apply:
+  stage: apply
+  script:
+    - cd ansible
+    - chmod o-w .
+    - echo $ANSIBLE_VAULT_PASSWORD > .vault_pass.txt
+    - chmod 600 id_rsa
+    - ansible-playbook main.yml -i hosts --vault-password-file .vault_pass.txt --private-key="id_rsa"
+  after_script:
+      - cd ansible
+      - git add vars_files/customers.yml
+      - git commit -m '[skip ci] commit from CI runner'
+      - git push origin master
+  only:
+    - master

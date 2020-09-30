@@ -1,0 +1,43 @@
+- name: Add a new VRF
+  cisco.mso.mso_schema_template_vrf:
+    host: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: no
+    schema: "{{ item.mso.schema }}"
+    template: "{{ item.stretched_template }}"
+    vrf: "{{ item.mso.vrf }}"
+    state: present
+  delegate_to: localhost
+
+- name: Add a new site VRF region CIDR
+  cisco.mso.mso_schema_site_vrf_region_cidr:
+    host: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: no
+    schema: "{{ item.mso.schema }}"
+    site: "{{ item.aws.name }}"
+    template: "{{ item.stretched_template }}"
+    vrf: "{{ item.mso.vrf }}"
+    region: "{{ item.aws.region }}"
+    cidr: "{{ item.aws.prefix }}"
+    state: present
+  delegate_to: localhost
+
+- name: Add a new site VRF region CIDR subnet
+  cisco.mso.mso_schema_site_vrf_region_cidr_subnet:
+    host: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: no
+    schema: "{{ item.mso.schema }}"
+    site: "{{ item.aws.name }}"
+    template: "{{ item.stretched_template }}"
+    vrf: "{{ item.mso.vrf }}"
+    region: "{{ item.aws.region }}"
+    cidr: "{{ item.aws.prefix }}"
+    subnet: '{{ item.aws.aws_subnet }}'
+    zone: "{{ item.aws.zone }}"
+    state: present
+  delegate_to: localhost

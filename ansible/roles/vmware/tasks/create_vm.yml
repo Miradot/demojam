@@ -1,0 +1,29 @@
+---
+- name: Create vms in Vmware
+  vmware_guest:
+    hostname: "{{ inventory_hostname }}"
+    username: "{{ user }}"
+    password: "{{ pass }}"
+    validate_certs: False
+    name: "{{ inner.name }}"
+    template: "{{ template }}"
+    datacenter: "{{ datacenter }}"
+    datastore: "{{ datastore }}"
+    cluster: "{{ cluster }}"
+    folder: "/{{ datacenter }}/vm/"
+    hardware:
+      hotadd_cpu: true
+      hotadd_memory: true
+      nested_virt: true
+      num_cpus: 2
+      num_cpu_cores_per_socket: 2
+      memory_mb: 4096
+    networks:
+      - name: "{{ item.mso.tenant }}|{{ item.mso.ap }}|{{ item.mso.epg }}"
+        device_type: vmxnet3
+    wait_for_ip_address: yes
+    state: poweredon
+  delegate_to: localhost
+  loop: "{{ item.vmware.vms }}"
+  loop_control:
+    loop_var: inner

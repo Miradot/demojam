@@ -1,0 +1,47 @@
+---
+- name: get vpc subnet-id
+  ec2_vpc_subnet_info:
+    aws_access_key: "{{ access_key }}"
+    aws_secret_key: "{{ secret_key }}"
+    region: "{{ item.aws.region }}"
+    filters:
+      "tag:Name": "subnet-[{{ item.aws.aws_subnet }}]"
+  register: subnet_id
+
+- name: provision ec2 instance with public access
+  ec2_instance:
+    aws_access_key: "{{ access_key }}"
+    aws_secret_key: "{{ secret_key }}"
+    key_name: server
+    name: "{{ inner.name }}"
+    image_id: ami-0363142d8c97b94c8
+    vpc_subnet_id:  "{{ subnet_id.subnets[0].subnet_id }}"
+    network:
+      assign_public_ip: true
+    instance_type: t3.micro
+    region: "{{ item.aws.region }}"
+    wait: yes
+    tags:
+      Name: "{{ inner.name }}"
+  loop: "{{ item.aws.vms }}"
+  loop_control:
+    loop_var: inner
+  when: item.aws.public == true
+
+- name: provision ec2 instance without public access
+  ec2_instance:
+    aws_access_key: "{{ access_key }}"
+    aws_secret_key: "{{ secret_key }}"
+    key_name: server
+    name: "{{ inner.name }}"
+    image_id: ami-0363142d8c97b94c8
+    vpc_subnet_id:  "{{ subnet_id.subnets[0].subnet_id }}"
+    instance_type: t3.micro
+    region: "{{ item.aws.region }}"
+    wait: yes
+    tags:
+      Name: "{{ inner.name }}"
+  loop: "{{ item.aws.vms }}"
+  loop_control:
+    loop_var: inner
+  when: item.aws.public == false

@@ -1,0 +1,46 @@
+---
+- name: Get a new /24 inside parent for onprem within Netbox
+  register: osubnet
+  netbox.netbox.netbox_prefix:
+    netbox_url: "http://{{ inventory_hostname }}"
+    netbox_token: "{{ token }}"
+    data:
+      parent: "{{ item.onprem.prefix }}"
+      prefix_length: 24
+    state: present
+    first_available: yes
+  delegate_to: localhost
+  when: item.onprem.onprem_subnet == ""
+
+- name: Get a new /24 inside parent for AWS within Netbox
+  register: awssubnet
+  netbox.netbox.netbox_prefix:
+    netbox_url: "http://{{ inventory_hostname }}"
+    netbox_token: "{{ token }}"
+    data:
+      parent: "{{ item.aws.prefix }}"
+      prefix_length: 24
+    state: present
+    first_available: yes
+  delegate_to: localhost
+  when: item.aws.aws_subnet == ""
+
+- name: add subnet to file
+  replace:
+    path: ./vars_files/customers.yml
+    regexp: '    onprem_subnet: ""'
+    replace: '    onprem_subnet: {{ osubnet.prefix.prefix }}'
+    after: "schema: {{ item.mso.schema }}"
+    before: "#/"
+  delegate_to: localhost
+  when: item.onprem.onprem_subnet == ""
+
+- name: add subnet to file
+  replace:
+    path: ./vars_files/customers.yml
+    regexp: '    aws_subnet: ""'
+    replace: '    aws_subnet: {{ awssubnet.prefix.prefix }}'
+    after: "schema: {{ item.mso.schema }}"
+    before: "#/"
+  delegate_to: localhost
+  when: item.onprem.onprem_subnet == ""
