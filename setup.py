@@ -38,8 +38,6 @@ def write_group_vars(settings):
                     options[i] = v[i]
 
         vault.dump(secrets, open("ansible/group_vars/{}/vault.yml".format(k), "wb"))
-        #with open("labb/group_vars/{}/vault.yml".format(k), "w") as infile:
-        #    yaml.dump(secrets, infile)
         
         if options:
             with open("ansible/group_vars/{}/options.yml".format(k), "w") as infile:
