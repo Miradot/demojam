@@ -1,6 +1,8 @@
 # Devnet Demo Jam
 
-[DIAGRAM](./demojam_topology.png)
+## Diagram
+
+[diagram](./demojam_topology.png)
 
 ## Prerequisites
 
