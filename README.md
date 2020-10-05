@@ -9,7 +9,7 @@
 * Self-hosted Netbox
 * Self-hosted Linux DHCP (isc-dhcp-server)
 * VMware
-* AWS (free tier account is possible)
+* AWS (free tier account possible)
 * Python3 on local machine
 * Git on local machine
 
