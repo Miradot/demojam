@@ -4,9 +4,10 @@
 
 * Cisco MSO
 * Cisco ACI
+* Cisco ACI Cloud Apic (AWS)
 * Self-hosted Gitlab
 * Self-hosted Netbox
-* Self-hosted DHCP
+* Self-hosted Linux DHCP (isc-dhcp-server)
 * VMware
 * AWS (free tier account is possible)
 * Python3 on local machine
