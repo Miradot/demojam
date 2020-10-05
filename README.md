@@ -1,5 +1,7 @@
 # Devnet Demo Jam
 
+[DIAGRAM](./demojam_topology.png)
+
 ## Prerequisites
 
 * Cisco MSO
@@ -49,8 +51,8 @@ Based on variables in ansible/vars_files/customers.yml
 
 1) Reservs prefix in netbox
 2) Writes down the prefix to customers.yml
-3) Configures DHCP
-4) Configures MSO; Tenant, Schema, Template, Contracts for external access
+3) Configures DHCP Server
+4) Configures MSO; Site, Tenant, Schema, Template, Network config, Contracts for external access
 5) Configures ACI; dhcp-relay
 6) Clones and configures VM(s) in VMware
 7) Configures VM(s) in AWS
