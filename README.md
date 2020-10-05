@@ -2,7 +2,7 @@
 
 ## Diagram
 
-[diagram](./demojam_topology.png)
+[diagram](./diagram.png)
 
 ## Prerequisites
 
