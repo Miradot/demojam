@@ -8,7 +8,7 @@
 * Self-hosted Netbox
 * Self-hosted DHCP
 * VMware
-* AWS
+* AWS (free tier account is possible)
 * Python3 on local machine
 * Git on local machine
 
@@ -57,7 +57,11 @@ Based on variables in ansible/vars_files/customers.yml
 ## End goal
 
 * AWS and VMware VM will be able to communicate freely.
-* AWS VM is publicly available if chosen.
+* AWS VM is publicly available if chosen based on L3-Rules created in Cisco MSO. 
+* Cloud (AWS) workload and on-prem (VMware) workload able to use the same security policies due to the use of Cisco MSO.
+* Cisco ACI handles the creation of on-prem network (even on VMware).
+* Cisco Cloud APIC handles the creation of AWS networks.
+* With the help of Cisco MSO all rules and networks are created on the same place and pushed to on-prem and cloud.
 
 ## Getting help
 
