@@ -76,7 +76,7 @@ If you have questions, concerns, bug reports, etc., please create an issue again
 
 ## Getting involved
 
-This project is supposed to work as examples to get started with automation in several areas. If you have any suggestions on what else to include, feel free to reach ut by creating an issue.
+This project is supposed to work as examples to get started with automation in several areas. If you have any suggestions on what else to include, feel free to reach out by creating an issue.
 
 ## Licensing info
 
