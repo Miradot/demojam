@@ -2,7 +2,7 @@
 
 ## Diagram
 
-[diagram](./diagram.png)
+[![diagram](./diagram.png)]
 
 ## Prerequisites
 
